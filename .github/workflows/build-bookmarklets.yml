@@ -1,0 +1,78 @@
+name: Build Bookmarklets
+
+on:
+  push:
+    paths:
+      - 'main/bookmarklets/source/**.js'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install terser
+      run: npm install terser
+
+    - name: Build bookmarklets
+      run: |
+        node -e "
+        const fs = require('fs');
+        const path = require('path');
+        const Terser = require('terser');
+
+        const srcDir = path.join(process.cwd(), 'main/bookmarklets/source');
+        const destDir = path.join(process.cwd(), 'main/bookmarklets/min');
+
+        if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
+
+        async function buildBookmarklet(filename) {
+          const filePath = path.join(srcDir, filename);
+          const code = fs.readFileSync(filePath, 'utf8');
+          const minified = await Terser.minify(code);
+
+          if (minified.error) {
+            console.error('Error minifying', filename, minified.error);
+            return;
+          }
+
+          // Wrap the minified code in a self-invoking function
+          const wrapped = `(function(){${minified.code}})();`;
+
+          // URL encode the wrapped code
+          const encoded = encodeURIComponent(wrapped);
+
+          // Build the bookmarklet string
+          const bookmarklet = `javascript:${encoded}`;
+
+          // Write to min folder with same filename but .txt extension (or .js if you prefer)
+          const outPath = path.join(destDir, filename.replace(/\.js$/, '.txt'));
+          fs.writeFileSync(outPath, bookmarklet, 'utf8');
+
+          console.log('Built bookmarklet:', filename);
+        }
+
+        async function main() {
+          const files = fs.readdirSync(srcDir).filter(f => f.endsWith('.js'));
+          for (const file of files) {
+            await buildBookmarklet(file);
+          }
+        }
+
+        main();
+        "
+
+    - name: Commit and push bookmarklets
+      run: |
+        git config user.name 'github-actions[bot]'
+        git config user.email 'github-actions[bot]@users.noreply.github.com'
+        git add main/bookmarklets/min/
+        git diff --quiet && echo 'No changes to commit' || git commit -m 'Build bookmarklets'
+        git push
