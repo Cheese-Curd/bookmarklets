@@ -23,28 +23,33 @@ jobs:
       - name: Install minifier
         run: npm install -g terser
 
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+      
       - name: Transform to bookmarklets
         run: |
-          mkdir -p bookmarklets/min
-          shopt -s nullglob
-          files=(bookmarklets/source/*.js)
-          if [ ${#files[@]} -eq 0 ]; then
+            sudo apt-get update && sudo apt-get install -y jq
+            mkdir -p bookmarklets/min
+            shopt -s nullglob
+            files=(bookmarklets/source/*.js)
+            if [ ${#files[@]} -eq 0 ]; then
             echo "No .js files to process."
             exit 0
-          fi
-          
-          for file in "${files[@]}"; do
+            fi
+
+            for file in "${files[@]}"; do
             filename=$(basename "$file")
             minified=$(terser "$file" --compress --mangle)
             
             # Wrap in IIFE
             wrapped="(function(){$minified})();"
             
-            # Encode for bookmarklet using Node
-            encoded=$(node -p "encodeURIComponent('$wrapped')")
+            # Encode for bookmarklet safely
+            encoded=$(printf '%s' "$wrapped" | jq -sRr @uri)
 
-            echo "javascript:(function() {$encoded})()" > "bookmarklets/min/$filename"
-          done
+            echo "javascript:$encoded" > "bookmarklets/min/$filename"
+            done
+
 
       - name: Commit and push changes
         run: |
