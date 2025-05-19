@@ -14,5 +14,4 @@ function choice(title = "Choose", ...options)
 		return numb;
 }
 
-const _choice = choice;
-export { _choice as choice };
+window.choice = choice;
