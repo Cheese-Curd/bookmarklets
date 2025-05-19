@@ -34,14 +34,15 @@ jobs:
           for file in "${files[@]}"; do
             filename=$(basename "$file")
             minified=$(terser "$file" --compress --mangle)
-            
-            # Wrap in IIFE
-            wrapped="(function(){$minified})();"
-            
-            # Encode for bookmarklet using Node
-            encoded=$(node -p "encodeURIComponent('$wrapped')")
-            
-            echo "javascript:$encoded" > "bookmarklets/min/$filename"
+
+            # Wrap in IIFE and encode using Node.js
+            node <<EOF > "bookmarklets/min/$filename"
+            const code = ${minified@Q}; // @Q quotes it safely
+            const wrapped = \`(function(){\${code}})();\`;
+            const encoded = encodeURIComponent(wrapped);
+            console.log("javascript:" + encoded);
+            EOF
+
           done
 
       - name: Commit and push changes
