@@ -24,7 +24,13 @@ jobs:
       - name: Transform to bookmarklets
         run: |
           mkdir -p main/bookmarklets/min
-          for file in main/bookmarklets/source/*.js; do
+          shopt -s nullglob
+          files=(main/bookmarklets/source/*.js)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No .js files to process."
+            exit 0
+          fi
+          for file in "${files[@]}"; do
             filename=$(basename "$file")
             minified=$(terser "$file" --compress --mangle)
             echo "javascript:$minified" > "main/bookmarklets/min/$filename"
