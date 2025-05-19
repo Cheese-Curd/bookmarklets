@@ -3,7 +3,7 @@ name: Build Bookmarklets
 on:
   push:
     paths:
-      - 'main/bookmarklets/source/**'
+      - 'bookmarklets/source/**'
   workflow_dispatch:
 
 jobs:
@@ -23,9 +23,9 @@ jobs:
 
       - name: Transform to bookmarklets
         run: |
-          mkdir -p main/bookmarklets/min
+          mkdir -p bookmarklets/min
           shopt -s nullglob
-          files=(main/bookmarklets/source/*.js)
+          files=(bookmarklets/source/*.js)
           if [ ${#files[@]} -eq 0 ]; then
             echo "No .js files to process."
             exit 0
@@ -33,13 +33,13 @@ jobs:
           for file in "${files[@]}"; do
             filename=$(basename "$file")
             minified=$(terser "$file" --compress --mangle)
-            echo "javascript:$minified" > "main/bookmarklets/min/$filename"
+            echo "javascript:$minified" > "bookmarklets/min/$filename"
           done
 
       - name: Commit and push changes
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          git add main/bookmarklets/min
+          git add bookmarklets/min
           git commit -m "Automated bookmarkletify" || echo "No changes to commit"
           git push
