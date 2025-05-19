@@ -30,10 +30,18 @@ jobs:
             echo "No .js files to process."
             exit 0
           fi
+          
           for file in "${files[@]}"; do
             filename=$(basename "$file")
             minified=$(terser "$file" --compress --mangle)
-            echo "javascript:$minified" > "bookmarklets/min/$filename"
+            
+            # Wrap in IIFE
+            wrapped="(function(){$minified})();"
+            
+            # Encode for bookmarklet using Node
+            encoded=$(node -p "encodeURIComponent('$wrapped')")
+            
+            echo "javascript:$encoded" > "bookmarklets/min/$filename"
           done
 
       - name: Commit and push changes
