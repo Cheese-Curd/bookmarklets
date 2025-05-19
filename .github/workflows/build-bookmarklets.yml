@@ -28,7 +28,6 @@ jobs:
       
       - name: Transform to bookmarklets
         run: |
-            sudo apt-get update && sudo apt-get install -y jq
             mkdir -p bookmarklets/min
             shopt -s nullglob
             files=(bookmarklets/source/*.js)
@@ -41,13 +40,10 @@ jobs:
             filename=$(basename "$file")
             minified=$(terser "$file" --compress --mangle)
             
-            # Wrap in IIFE
-            wrapped="(function(){$minified})();"
-            
             # Encode for bookmarklet safely
-            encoded=$(printf '%s' "$wrapped" | jq -sRr @uri)
+            encoded=$(printf '%s' "$minified" | jq -sRr @uri)
 
-            echo "javascript:$encoded" > "bookmarklets/min/$filename"
+            echo "javascript:(function(){$encoded})();" > "bookmarklets/min/$filename"
             done
 
 
