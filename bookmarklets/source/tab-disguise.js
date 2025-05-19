@@ -55,7 +55,7 @@ script.onload = function() {
 	{
 		var attemptText = "";
 		if (attempts > 0)
-			attemptText = ` [ Attempt: ${attempts} ]`;
+			attemptText = ` [ Attempt: ${attempts + 1} ]`;
 
 		var input = choice("Preset or Custom?" + attemptText, "Preset", "Custom", "Cancel");
 		switch (input)
