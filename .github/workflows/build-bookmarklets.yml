@@ -41,9 +41,9 @@ jobs:
             minified=$(terser "$file" --compress --mangle)
             
             # Encode for bookmarklet safely
-            encoded=$(printf '%s' "$minified" | jq -sRr @uri)
+            # encoded=$(printf '%s' "$minified" | jq -sRr @uri)
 
-            echo "javascript:(function(){$encoded})();" > "bookmarklets/min/$filename"
+            echo "javascript:(function(){$minified})();" > "bookmarklets/min/$filename"
             done
 
 
