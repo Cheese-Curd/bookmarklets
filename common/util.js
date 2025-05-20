@@ -8,6 +8,9 @@ function choice(title = "Choose", ...options)
 	var numb = parseInt(chosen);
 
 	/* Returning the Selection */
+	if (chosen == null) /* If we click cancel, then it'll be this */
+		return -2
+
 	if (numb === NaN)
 		return -1;
 	else
