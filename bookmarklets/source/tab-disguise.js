@@ -1,11 +1,11 @@
 /*
-	Tab Disguise V1.0
+	Tab Disguise V1.2
 		Eliana 2025
 */
 
 /* Get Utils Code */
 var script = document.createElement('script');
-script.src = 'https://cdn.jsdelivr.net/gh/Cheese-Curd/bookmarklets@main/common/util.js';
+script.src = 'https://fastly.jsdelivr.net/gh/Cheese-Curd/bookmarklets@main/common/util.js';
 script.onload = function() {
 	/* Proceed with code */
 	console.log("[ Tab Disguise ] Loaded Util Script");
@@ -57,9 +57,13 @@ script.onload = function() {
 		if (attempts > 0)
 			attemptText = ` [ Attempt: ${attempts + 1} ]`;
 
-		var input = choice("Preset or Custom?" + attemptText, "Preset", "Custom", "Cancel");
+		var input = choice("Preset or Custom?" + attemptText, "Preset", "Custom");
+		// console.log(input);
 		switch (input)
 		{
+			case -2:
+				alert("Canceled.");
+				return true;
 			case 1:
 				var presetChoice = choice("What Preset?", "Canvas", "Google Drive", "Google");
 				switch (presetChoice)
@@ -84,9 +88,6 @@ script.onload = function() {
 				tabName = prompt("Custom Tab\nWhat is the tab title?");
 				tabIcon = prompt("Custom Tab\nWhat is the tab icon? (This is a link)");
 				break;
-			case 3:
-				alert("Canceled");
-				return true;
 			default:
 				alert("Invalid choice, retrying...");
 				start(attempts + 1);
@@ -101,6 +102,7 @@ script.onload = function() {
 
 	/* Start Bookmarklet */
 	var canceled = start(0);
+	// console.log(canceled);
 	if (canceled == false)
 		if (preset)
 			alert(`Set tab to use preset: ${presetName}`);
