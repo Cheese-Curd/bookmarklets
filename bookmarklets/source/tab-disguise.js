@@ -3,11 +3,16 @@
 		Eliana 2025
 */
 
+var version = 1.2:
+
 /* Get Utils Code */
 var script = document.createElement('script');
 script.src = 'https://fastly.jsdelivr.net/gh/Cheese-Curd/bookmarklets@main/common/util.js';
 script.onload = function() {
 	/* Proceed with code */
+	if (checkVers("tab-disguise") > version)
+		alert("Tab Disguise is out of date.\nPlease Update. Script will continue after this..");
+	
 	console.log("[ Tab Disguise ] Loaded Util Script");
 	var preset     = false;
 	var presetName = ""
