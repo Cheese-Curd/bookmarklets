@@ -53,6 +53,10 @@ script.onload = function() {
 				tabName = "Google";
 				tabIcon = "https://www.google.com/favicon.ico";
 				break;
+			case "skyward":
+				tabName = "Student Access"
+				tabIcon = "https://www.skyward.com/skyicon.ico"
+				break;
 		}
 	}
 
@@ -70,7 +74,7 @@ script.onload = function() {
 				alert("Canceled.");
 				return true;
 			case 1:
-				var presetChoice = choice("What Preset?", "Canvas", "Google Drive", "Google");
+				var presetChoice = choice("What Preset?", "Canvas", "Google Drive", "Google", "Skyward");
 				switch (presetChoice)
 				{
 					case 1:
@@ -81,6 +85,9 @@ script.onload = function() {
 						break;
 					case 3:
 						getPreset("google");
+						break;
+					case 4:
+						getPreset("skyward");
 						break;
 					default:
 						alert("Invalid preset choice, retrying...");
