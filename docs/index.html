@@ -15,10 +15,27 @@
 			<a class="navBtn" href="../projects">Projects</a>
 			<a class="navBtn" style="margin-right: 10px; margin-left: auto;" href="javascript:toggleTheme()">Toggle Theme</a>
 		</nav>
-        <div id="title">Projects</div>
+        <div id="title">Bookmarklets</div>
         <div id="content">
           hello :D
 		    </div>
         <div id="copyright"><a href="/LICENSE.md">License</a></div>
+		        <script> /* Title Fade in */
+                        document.addEventListener('DOMContentLoaded', () =>
+                        {
+                                const title = document.querySelector('#title');
+                const content = document.querySelector('#content');
+                                requestAnimationFrame(() =>
+                                {
+                    setTimeout(() =>
+                    {
+                        title.style.opacity = '1';
+                        setTimeout(() =>
+                        {
+                            content.style.opacity = '1';
+                        }, 300);
+                    }, 300);
+                                });
+                        }, { "once":true });
 	</body>
 </html>
