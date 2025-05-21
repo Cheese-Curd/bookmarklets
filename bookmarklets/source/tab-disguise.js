@@ -11,7 +11,7 @@ script.src = 'https://fastly.jsdelivr.net/gh/Cheese-Curd/bookmarklets@main/commo
 script.onload = function() {
 	/* Proceed with code */
 	if (checkVers("tab-disguise") > version)
-		alert("Tab Disguise is out of date.\nPlease Update. Script will continue after this..");
+		alert("Tab Disguise is out of date.\nPlease Update. Script will continue after this.");
 	
 	console.log("[ Tab Disguise ] Loaded Util Script");
 	var preset     = false;
