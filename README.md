@@ -14,3 +14,6 @@ Here's minified:
 javascript:(function(){var s="script-name"; var e=document.createElement("script");e.src=`https://cdn.jsdelivr.net/gh/Cheese-Curd/bookmarklets@main/bookmarklets/source/${s}.js`,document.head.appendChild(e)})();
 ```
 Inside of the function is a variable, set that to the name of the script's file.
+# Potential Issues
+1. Nothing happening when executing
+This can be caused by the website you're using refusing to load external scripts (GitHub is one of them) or a general script error, show me the dev console if this happens!
