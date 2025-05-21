@@ -3,7 +3,7 @@
 		Eliana 2025
 */
 
-var version = 1.2:
+var version = 1.2;
 
 /* Get Utils Code */
 var script = document.createElement('script');
