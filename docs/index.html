@@ -16,9 +16,17 @@
 			<a class="navBtn" style="margin-right: 10px; margin-left: auto;" href="javascript:toggleTheme()">Toggle Theme</a>
 		</nav>
         <div id="title">Bookmarklets</div>
-        <div id="content">
-          hello :D
-		    </div>
+        <div id="content" style="display: flex; flex-direction: row;">
+            <div class="project">
+                <span style="font-size: x-large;" class="codeBlock">Tab Disguise</span>
+				<div></div>
+                <br><br>
+                <div>
+                    <span class="codeBlock">Link:</span>
+                    <span><a href="" id="link0">[ Copy / Drag 'n Drop ]</a></span>
+                </div>
+            </div>
+		</div>
         <div id="copyright"><a href="/LICENSE.md">License</a></div>
 			<script> /* Title Fade in */
 				document.addEventListener('DOMContentLoaded', () =>
@@ -37,6 +45,14 @@
 						}, 300);
 					});
 				}, { "once":true });
+
+				document.getElementById('link0').href = getScript("tab-disguise");
+
+				function getScript(name)
+				{
+					return `var t="${name}",e="";try{const o=await fetch(\`https://raw.githubusercontent.com/Cheese-Curd/bookmarklets/main/bookmarklets/\${t}.js\`);if(!o.ok)throw new Error(\`Error loading \${t}. Please report this to me with console output if possible.\\nStatus Code: \${o.status}\\nStatus Text: \${o.statusText}\`);e=await o.text();var a=document.createElement("script");a.textContent=e,document.head.appendChild(a),checkVers(name)>scriptVersion&&alert("Script is out of date.\\nPlease Update. Script will continue after this.")}catch(t){alert(t)}`;
+					return script
+				}
 		</script>
 	</body>
 </html>
