@@ -26,11 +26,11 @@ function checkVers(key)
 	request.send(null);
 	if (request.status === 200)
 	{
-	var result = JSON.parse(request.responseText);
-	if (result[key])
-		return result[key];
-		
-	return -1 // No version found
+		var result = JSON.parse(request.responseText);
+		if (result[key])
+			return result[key];
+			
+		return -1 // No version found
 	}
 
 	return -2; // Error fetching data
@@ -40,4 +40,4 @@ window.checkVers = checkVers;
 window.choice    = choice;
 
 if (checkVers("utils") > version)
-	alert("Utils is out of date!/Script may not work!");
+	alert("Utils is out of date!\nScript may not work!");
