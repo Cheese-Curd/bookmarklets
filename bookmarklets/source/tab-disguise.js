@@ -89,6 +89,10 @@ script.onload = function() {
 					case 4:
 						getPreset("skyward");
 						break;
+					case -1:
+						alert("Choice must be a number, retrying...");
+						start(attempts + 1);
+						break;
 					default:
 						alert("Invalid preset choice, retrying...");
 						start(attempts + 1);
