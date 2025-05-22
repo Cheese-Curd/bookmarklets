@@ -1,4 +1,4 @@
-var version = 1.1;
+var version = 1.3;
 
 function choice(title = "Choose", ...options)
 {
@@ -19,21 +19,40 @@ function choice(title = "Choose", ...options)
 		return numb;
 }
 
-function checkVers(key)
+async function checkVers(key)
 {
-	const request = new XMLHttpRequest();
-	request.open("GET", "https://raw.githubusercontent.com/Cheese-Curd/bookmarklets/main/docs/version.json", false); // most recent data
-	request.send(null);
-	if (request.status === 200)
+	try
 	{
-		var result = JSON.parse(request.responseText);
+		const response = await fetch("https://raw.githubusercontent.com/Cheese-Curd/bookmarklets/main/docs/version.json")
+		if (!response.ok) throw new Error(`Error loading script versions.\nStatus Code: ${response.status}\nStatus Text: ${response.statusText}`);
+
+		const jsonContent = await response.text();
+		var result = JSON.parse(jsonContent);
 		if (result[key])
 			return result[key];
-			
-		return -1 // No version found
-	}
 
-	return -2; // Error fetching data
+		throw new Error(`No valid version found for ${key}. Returning -1`);
+
+	} catch (err) { alert(err); }
+
+	/* Depricated: XMLHttpRequest is depricated. */
+	/*
+		const request = new XMLHttpRequest();
+		request.open("GET", "https://raw.githubusercontent.com/Cheese-Curd/bookmarklets/main/docs/version.json", false); // most recent data
+		request.send(null);
+		if (request.status === 200)
+		{
+			var result = JSON.parse(request.responseText);
+			if (result[key])
+				return result[key];
+				
+			return -1 // No version found
+		}
+
+		return -2; // Error fetching data
+	*/
+
+	return -1;
 }
 
 window.checkVers = checkVers;

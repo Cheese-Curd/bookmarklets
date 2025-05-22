@@ -43,7 +43,7 @@ jobs:
             # Encode for bookmarklet safely
             # encoded=$(printf '%s' "$minified" | jq -sRr @uri)
 
-            echo "javascript:(function(){$minified})();" > "bookmarklets/min/$filename"
+            echo "javascript:(async function(){$minified})();" > "bookmarklets/min/$filename"
             done
 
 

@@ -1,43 +1,44 @@
 /*
-	Tab Disguise V1.2
+	Tab Disguise V1.4
 		Eliana 2025
 */
 
-var scriptVersion = 1.2;
+var scriptVersion = 1.4;
 
 /* Get Utils Code */
-var valid     = false;
 var scriptSrc = "";
 
-const request = new XMLHttpRequest();
-request.open("GET", "https://raw.githubusercontent.com/Cheese-Curd/bookmarklets/main/common/util.js", false); // most recent data
-request.send(null);
-if (request.status === 200)
+async function getUtils()
 {
-	valid     = true;
-	scriptSrc = request.responseText;
+	try
+	{
+		const response = await fetch("https://raw.githubusercontent.com/Cheese-Curd/bookmarklets/main/common/util.js")
+		if (!response.ok) throw new Error(`Error loading util.js, which this script is dependent on.\nStatus Code: ${response.status}\nStatus Text: ${response.statusText}`);
+
+		scriptSrc = await response.text();
+
+		var script = document.createElement('script');
+		script.textContent = scriptSrc;
+		document.head.appendChild(script);
+
+		console.log("Loaded Util Script");
+		if (checkVers("tab-disguise") > scriptVersion)
+			alert("Tab Disguise is out of date.\nPlease Update. Script will continue after this.");
+
+		scriptCode()
+		
+	} catch (err) { alert(err); }
 }
-else alert("Script is unable to load Utils.JS, which it depends on.");
 
-console.log(valid);
-
-if (valid)
+/* Write code here */
+function scriptCode()
 {
-	var script = document.createElement('script');
-	script.textContent = scriptSrc;
-	document.head.appendChild(script);
-
-	/* Proceed with code */
-	console.log("[ Tab Disguise ] Loaded Util Script");
-	if (checkVers("tab-disguise") > scriptVersion)
-		alert("Tab Disguise is out of date.\nPlease Update. Script will continue after this.");
-	
 	var preset     = false;
 	var presetName = ""
-
+	
 	var tabName = "";
 	var tabIcon = "";
-
+	
 	function updateSite()
 	{
 		let icon = document.querySelector("link[rel~='icon']");
@@ -47,16 +48,16 @@ if (valid)
 			icon.type = 'image/x-icon';
 			document.head.appendChild(icon);
 		}
-
+	
 		icon.href = tabIcon + '?v=' + Date.now();
 		document.title = tabName;
 	}
-
+	
 	function getPreset(name)
 	{
 		preset     = true;
 		presetName = name;
-
+	
 		switch (name)
 		{
 			case "canvas":
@@ -77,13 +78,13 @@ if (valid)
 				break;
 		}
 	}
-
+	
 	function start(attempts = 0)
 	{
 		var attemptText = "";
 		if (attempts > 0)
 			attemptText = ` [ Attempt: ${attempts + 1} ]`;
-
+	
 		var input = choice("Preset or Custom?" + attemptText, "Preset", "Custom");
 		// console.log(input);
 		switch (input)
@@ -124,13 +125,13 @@ if (valid)
 				alert("Invalid choice, retrying...");
 				return start(attempts + 1);
 		}
-
+	
 		/* Update the site with the chosen preset/custom stuff */
 		updateSite();
-
+	
 		return false;
 	}
-
+	
 	/* Start Bookmarklet */
 	var canceled = start(0);
 	// console.log(canceled);
@@ -140,3 +141,5 @@ if (valid)
 		else
 			alert(`Set tab to use custom settings:\n > Tab Title: ${tabName}\n > Tab Icon: ${tabIcon}`)
 }
+
+getUtils()
