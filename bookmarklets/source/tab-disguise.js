@@ -91,12 +91,10 @@ script.onload = function() {
 						break;
 					case -1:
 						alert("Choice must be a number, retrying...");
-						start(attempts + 1);
-						break;
+						return start(attempts + 1);
 					default:
 						alert("Invalid preset choice, retrying...");
-						start(attempts + 1);
-						break;
+						return start(attempts + 1);
 				}
 				
 				break;
@@ -106,8 +104,7 @@ script.onload = function() {
 				break;
 			default:
 				alert("Invalid choice, retrying...");
-				start(attempts + 1);
-				break;
+				return start(attempts + 1);
 		}
 
 		/* Update the site with the chosen preset/custom stuff */
