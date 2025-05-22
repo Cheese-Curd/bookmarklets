@@ -21,19 +21,19 @@ function choice(title = "Choose", ...options)
 
 function checkVers(key)
 {
-  const request = new XMLHttpRequest();
-  request.open("GET", "https://raw.githubusercontent.com/Cheese-Curd/bookmarklets/main/docs/version.json", false); // most recent data
-  request.send(null);
-  if (request.status === 200)
-  {
-    var result = JSON.parse(request.responseText);
-    if (result[key])
-      return result[key];
-      
-    return -1 // No version found
-  }
-  
-  return -2; // Error fetching data
+	const request = new XMLHttpRequest();
+	request.open("GET", "https://raw.githubusercontent.com/Cheese-Curd/bookmarklets/main/docs/version.json", false); // most recent data
+	request.send(null);
+	if (request.status === 200)
+	{
+	var result = JSON.parse(request.responseText);
+	if (result[key])
+		return result[key];
+		
+	return -1 // No version found
+	}
+
+	return -2; // Error fetching data
 }
 
 window.checkVers = checkVers;
