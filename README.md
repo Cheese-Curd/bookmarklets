@@ -17,7 +17,6 @@ javascript:(async function () {
 		script.textContent = scriptSrc;
 		document.head.appendChild(script);
 
-		console.log("Loaded Util Script");
 		if (checkVers(name) > scriptVersion)
 			alert("Script is out of date.\nPlease Update. Script will continue after this.");
 
@@ -26,7 +25,7 @@ javascript:(async function () {
 ```
 Here's minified:
 ```js
-javascript:(async function(){var t="script-name",e="";try{const o=await fetch(`https://raw.githubusercontent.com/Cheese-Curd/bookmarklets/main/bookmarklets/source/${t}.js`);if(!o.ok)throw new Error(`Error loading ${t}. Please report this to me with console output if possible.\nStatus Code: ${o.status}\nStatus Text: ${o.statusText}`);e=await o.text();var a=document.createElement("script");a.textContent=e,document.head.appendChild(a),console.log("Loaded Util Script"),checkVers(name)>scriptVersion&&alert("Script is out of date.\nPlease Update. Script will continue after this.")}catch(t){alert(t)}})();
+javascript:(async function(){var t="script-name",e="";try{const o=await fetch(`https://raw.githubusercontent.com/Cheese-Curd/bookmarklets/main/bookmarklets/${t}.js`);if(!o.ok)throw new Error(`Error loading ${t}. Please report this to me with console output if possible.\nStatus Code: ${o.status}\nStatus Text: ${o.statusText}`);e=await o.text();var a=document.createElement("script");a.textContent=e,document.head.appendChild(a),checkVers(name)>scriptVersion&&alert("Script is out of date.\nPlease Update. Script will continue after this.")}catch(t){alert(t)}})();
 ```
 Inside of the function is a variable, set that to the name of the script's file.
 # Potential Issues
